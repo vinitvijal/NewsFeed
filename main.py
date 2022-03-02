@@ -4,6 +4,29 @@ import sys
 
 newsapi = NewsApiClient(api_key='e5d9a31db0bf4bd38783bd79c1a57753')
 
+def breaking_news():
+        # /v2/top-headlines
+    top_headlines = newsapi.get_top_headlines(language='en',
+                                            country='in')
+
+    no_of_results = top_headlines['totalResults']
+    headlines = top_headlines['articles']
+    
+    for i in range(len(headlines)):     
+        current_headline = headlines[i]
+        print()
+        print(str(i+1) + ' : ' + current_headline['source']['name'])
+        print()
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        print('Title : ' + current_headline['title'])
+        print()
+        print('Description : ' + current_headline['description'])
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        print()
+
+
+
+
 def init():
     print()
     print(' ~~~ Main Menu ~~~')
@@ -34,7 +57,7 @@ def init():
         
         else:
             raise error
-    except:
+    finally:
         if close:
             pass
         else:
