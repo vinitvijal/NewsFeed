@@ -1,7 +1,5 @@
 from __future__ import barry_as_FLUFL
 from distutils.log import error
-from tkinter import N
-from turtle import pen
 from newsapi import NewsApiClient
 import sys
 
