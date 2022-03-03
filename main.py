@@ -2,6 +2,30 @@ from __future__ import barry_as_FLUFL
 from distutils.log import error
 from newsapi import NewsApiClient
 import sys
+import mysql.connector
+
+
+mydb = mysql.connector.connect(
+  host="brfytvylwdzhculozfq5-mysql.services.clever-cloud.com",
+  user="uh06snweshud7gzj",
+  password="24c1orUcFmlEOgctcpFH",
+  database="brfytvylwdzhculozfq5"
+)
+
+
+def Save(sourceName, title, description, content, publishedAt, url):
+
+    mycursor = mydb.cursor()
+
+    sql = "INSERT INTO NewsFeeds (sourceName, title, description, content, publishedAt, url) VALUES (%s, %s, %s, %s, %s, %s)"
+    val = (sourceName, title, description, content, publishedAt, url)
+    mycursor.execute(sql, val)
+
+    mydb.commit()
+
+    print("NewsFeed Saved !!!")
+
+
 
 newsapi = NewsApiClient(api_key='e5d9a31db0bf4bd38783bd79c1a57753')
 
