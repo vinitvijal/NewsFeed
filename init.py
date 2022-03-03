@@ -14,12 +14,12 @@ no_of_results = top_headlines['totalResults']
 headlines = top_headlines['articles']
 count = 1
 
-# print(headlines)
-for i in range(10):     
-    current_headline = headlines[i]
-    print()
-    print(str(i+1) + ' : ' + current_headline['source']['name'])
-    print()
-    print('Title : ' + current_headline['title'])
-    print()
-    print()
+print(headlines[1].keys())
+# for i in range(10):     
+#     current_headline = headlines[i]
+#     print()
+#     print(str(i+1) + ' : ' + current_headline['source']['name'])
+#     print()
+#     print('Title : ' + current_headline['title'])
+#     print()
+#     print()
