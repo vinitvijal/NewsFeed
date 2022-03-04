@@ -1,5 +1,6 @@
 from __future__ import barry_as_FLUFL
 from distutils.log import error
+from traceback import print_tb
 from newsapi import NewsApiClient
 import sys
 import mysql.connector
@@ -24,6 +25,29 @@ def Save(sourceName, title, description, content, publishedAt, url):
     mydb.commit()
 
     print("NewsFeed Saved !!!")
+
+
+def SavedNews():
+    mycursor = mydb.cursor()
+
+    mycursor.execute("SELECT SN, sourceName, title, description, publishedAt FROM NewsFeeds")
+
+    myresult = mycursor.fetchall()
+
+    for x in myresult: 
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        print()
+        print(str(x[0]) + '. ' + x[1])
+        print()
+        print('Title : ' + x[2])
+        print()
+        print('Description : ' + x[3])
+        print()
+        print('Dated On : ' + x[4])
+        print()
+    # Now Write Code For Input Options Here To See Data and Delete Data + Menu Next Previous Exit
+       
+
 
 
 
@@ -237,6 +261,8 @@ def init():
                 sports_news()
             elif option == '5':
                 search()
+            elif option == '6':
+                SavedNews()
         
         else:
             raise error
