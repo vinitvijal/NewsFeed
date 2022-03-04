@@ -1,6 +1,3 @@
-from __future__ import barry_as_FLUFL
-from distutils.log import error
-from traceback import print_tb
 from newsapi import NewsApiClient
 import sys
 import mysql.connector
@@ -111,26 +108,24 @@ def breaking_news(case=True,n=0,m=5):
         sourceName, title, description, content, publishedAt, url =  current_headline['source']['name'], current_headline['title'], current_headline['description'], current_headline['content'], current_headline['publishedAt'], current_headline['url'] 
         print()
         print()
-        print('  (S) - Save Article For Later    |     (M) - Main Menu.    |     (P) - Previous Menu.')
+        print('  (S) - Save Article For Later    |     (M) - Main Menu.    |     (P) - Previous Menu.     |     (exit) - Exit.  ')
         print('')
         print('')
-        try:
-            menuSel = input('Select Option : ')
-            if menuSel in ('S','s'):
-                Save(sourceName, title, description, content, publishedAt, url)
-            elif menuSel in ('M','m'):
-                init()
-            elif menuSel in ('P','p'):
-                breaking_news()
-            else:
-                raise error
-        except:
-            print('Wrong Input... Choose Correct')
-            print()
-            print()
-            SingleHeadline(n)
+    
+        menuSel = input('Select Option : ')
+        if menuSel in ('S','s'):
+            Save(sourceName, title, description, content, publishedAt, url)
+        elif menuSel in ('M','m'):
+            init()
+        elif menuSel in ('P','p'):
+            breaking_news()
 
-            pass
+        elif menuSel in ('exit','Exit', 'EXIT'):
+            sys.exit(1)
+        else:
+            print('Wrong Input Try Again...')
+            SingleHeadline(n)
+        
 
     if case == False :
         n = 0 
