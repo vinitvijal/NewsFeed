@@ -1,6 +1,8 @@
+from distutils.log import error
 from newsapi import NewsApiClient
 import sys
 import mysql.connector
+from weather import init as weatherNews
 
 
 mydb = mysql.connector.connect(
@@ -25,6 +27,12 @@ def Save(sourceName, title, description, content, publishedAt, url):
 
 
 def SavedNews():
+    def OptionsSaved():
+        print()
+        print()
+        print('If You Want To Ready Any Article - SN. (1,2,3...) ')
+        print('If You Want To Delete Any Article - (D1, D2, D12, D13....')
+        print('To Main Menu : M')
     mycursor = mydb.cursor()
 
     mycursor.execute("SELECT SN, sourceName, title, description, publishedAt FROM NewsFeeds")
@@ -42,6 +50,45 @@ def SavedNews():
         print()
         print('Dated On : ' + x[4])
         print()
+    OptionsSaved()
+  
+    answer = input('Your Option : ')
+    if answer.isnumeric():
+        sql = "SELECT SN, sourceName, title, description, content, publishedAt, url FROM NewsFeeds where SN Like %s"
+        val = int(answer)
+
+        mycursor.execute(sql, val)
+
+        myresult = mycursor.fetchall()
+
+        for x in myresult: 
+
+            print('x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x')
+            print()
+            print()
+            print(str(x[0]) + '. ' + x[1])
+            print()
+            print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+            print('Title : ' + x[2])
+            print()
+            print('Description : ' + x[3])
+            print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+            print()
+            print()
+            print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+            print()
+            
+            print('Article : ' + x[4])
+            print()
+            print('Read More : ' + x[6])
+            print()
+            print('Published At : ' + x[5])
+            print()
+            print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+            print()
+
+
+
     # Now Write Code For Input Options Here To See Data and Delete Data + Menu Next Previous Exit
        
 
@@ -235,13 +282,15 @@ def init():
     print('3. Health News')
     print('4. Sports News')
     print('5. Search Articles and News')
+    print('6. Weather Updates (Beta)')
+    print('7. Saved Articles')
     print()
     close = False
     try:
         option = input('Select Any Option : ')
         if option == 'exit':
             close = True
-        elif int(option) in [1,2,3,4,5,6]:
+        elif int(option) in [1,2,3,4,5,6,7]:
             print()
             if option == '1':
                 global breaking
@@ -257,10 +306,14 @@ def init():
             elif option == '5':
                 search()
             elif option == '6':
+                weatherNews()
+                init()
+            elif option == '7':
                 SavedNews()
         
         else:
             raise error
+            
     except :
         if close:
             pass
