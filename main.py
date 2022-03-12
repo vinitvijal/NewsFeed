@@ -1,4 +1,5 @@
 from distutils.log import error
+from random import randint
 from newsapi import NewsApiClient
 import sys
 import mysql.connector
@@ -29,10 +30,15 @@ def Save(sourceName, title, description, content, publishedAt, url):
 def SavedNews():
     def OptionsSaved():
         print()
-        print()
-        print('If You Want To Ready Any Article - SN. (1,2,3...) ')
-        print('If You Want To Delete Any Article - (D1, D2, D12, D13....')
-        print('To Main Menu : M')
+        print('1. Saved Articles.')
+        print('2. Main Menu.\n')
+        ch = int(input('Select Option : '))
+        if ch == 1:
+            SavedNews()
+        elif ch == 2:
+            sys.exit(1)
+        else:
+            OptionsSaved()
     mycursor = mydb.cursor()
 
     mycursor.execute("SELECT SN, sourceName, title, description, publishedAt FROM NewsFeeds")
@@ -50,14 +56,17 @@ def SavedNews():
         print()
         print('Dated On : ' + x[4])
         print()
-    OptionsSaved()
-  
+    print()
+    print('If You Want To Ready Any Article - SN. (1,2,3...) ')
+    print('If You Want To Delete Any Article - (D1, D2, D12, D13....')
+    print('To Main Menu : M')
+    print()
+
     answer = input('Your Option : ')
     if answer.isnumeric():
-        sql = "SELECT SN, sourceName, title, description, content, publishedAt, url FROM NewsFeeds where SN Like %s"
-        val = int(answer)
+        sql = "SELECT SN, sourceName, title, description, content, publishedAt, url FROM NewsFeeds where SN Like %s" %answer
 
-        mycursor.execute(sql, val)
+        mycursor.execute(sql)
 
         myresult = mycursor.fetchall()
 
@@ -69,15 +78,11 @@ def SavedNews():
             print(str(x[0]) + '. ' + x[1])
             print()
             print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+            print()
             print('Title : ' + x[2])
             print()
             print('Description : ' + x[3])
-            print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
             print()
-            print()
-            print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-            print()
-            
             print('Article : ' + x[4])
             print()
             print('Read More : ' + x[6])
@@ -86,10 +91,18 @@ def SavedNews():
             print()
             print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
             print()
+            init()
+    elif answer[0]=='D':
+        rank = answer[1:]
+        sql = "DELETE FROM NewsFeeds WHERE SN = %s"
+        val = (rank,)
 
+        mycursor.execute(sql, val)
 
+        mydb.commit()
+        print('\n\nDeleted Successfully!!!\n\n')
+        OptionsSaved()
 
-    # Now Write Code For Input Options Here To See Data and Delete Data + Menu Next Previous Exit
        
 
 
@@ -318,11 +331,7 @@ def init():
         if close:
             pass
         else:
-            print()
-            print()
-            print('Wrong Input Selected Try Again...')
-            print()
-            print()
+            print('\n\n')
             init()
 
     if close:
